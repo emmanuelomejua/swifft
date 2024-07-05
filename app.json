@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "swift",
+    "slug": "swift-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/swiftlogo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/swiftlogo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#29BB00"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/swiftlogo.png",
+        "backgroundColor": "#29bb00"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "owner": "voks-technologies",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/96c92e35-c8ca-4280-8889-943fce6b5e53"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "96c92e35-c8ca-4280-8889-943fce6b5e53"
+      }
+    }
+  }
+}
