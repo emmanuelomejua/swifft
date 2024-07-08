@@ -9,6 +9,7 @@ import CustomModal from '../../components/CustomModal';
 import CustomButton from '../../components/CustomButton';
 import Services from '../../components/Services';
 import { useSelector } from 'react-redux';
+import { useAuth } from '../../zustand/useAuth';
 // import { FIREBASE_AUTH } from '../../firebaseConfig';
 
 const Home = ({route}) => {
@@ -16,7 +17,7 @@ const Home = ({route}) => {
     // const { user } = route.params;
     const navigation = useNavigation();
 
-    // const auth = useSelector((state) => state.auth); 
+   const user = useAuth((state) => state.user);
 
     const [isFocused, setIsFocused] = useState(false);
 
@@ -39,7 +40,7 @@ const Home = ({route}) => {
                         <View style={tw`flex flex-row justify-between items-center w-full`}>
                             <View style={tw`flex flex-row justify-start items-center gap-3`}>
                                 <Image source={require("../../assets/avatar.png")} />
-                                <Text style={tw.style({ fontFamily: 'PTSans-Regular' }, 'text-xl text-black')}>Hi, Johnson</Text>
+                                <Text style={tw.style({ fontFamily: 'PTSans-Regular' }, 'text-xl text-black')}>Hi, {user?.username}</Text>
                             </View>
                             <View style={tw`flex flex-row justify-end items-end gap-2`}>
                                 <Ionicons name="notifications-outline" size={20} color={"#29bb00"} />

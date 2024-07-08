@@ -1,22 +1,24 @@
 //import libraries
-import { Text, View, SafeAreaView, Alert } from 'react-native';
+import { Text, View, SafeAreaView, Alert, ActivityIndicator, ScrollView } from 'react-native';
 import { useState } from 'react';
 import tw from "twrnc";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Constants from 'expo-constants';
+import axios from 'axios';
 //import components
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../../redux/slice/userSlice';
+import SERVER from '../../util/server';
+import { setToken } from '../../store/token';
 
 const CreatePassword = () => {
     const navigation = useNavigation();
-    const dispatch = useDispatch()
-    // const auth = FIREBASE_AUTH;
+    const route = useRoute();
 
-    // const [email, setEmail] = useState("");
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [inputColor, setInputColor] = useState(false);
@@ -40,61 +42,101 @@ const CreatePassword = () => {
         if (password !== confirmPassword) {
             Alert.alert("passwords don't match");
         }
-
         try {
-            dispatch(setUser(password))
-            setLoading(!loading)
-            navigation.navigate("Profile");
+            const res = await axios.post("https://swift-tznw.onrender.com/api/v1/customer/", {
+                username,
+                email,
+                phoneNumber,
+                password
+            });
+            setLoading(true);
+            console.log(res);
+            setToken(res.tokens);
             Alert.alert("Welcome to Swift Connect");
+            navigation.navigate("Profile");
+            setLoading(false)
         } catch (error) {
             console.log(error);
-            Alert.alert("Error in creating your account")
-        } 
+            Alert.alert(error);
+            setLoading(false)
+        }
     }
 
     return (
         <SafeAreaView style={{ marginTop: Constants.statusBarHeight }}>
-            <View style={tw`flex justify-start items-start gap-12 bg-white h-full p-4`}>
-                <Ionicons name='chevron-back' size={24} color={"#000"} onPress={() => navigation.goBack()} />
-                <View style={tw`flex justify-start items-start gap-4`}>
-                    <Text style={tw.style({ fontFamily: 'PTSans-Bold' }, 'text-3xl text-black')}>Create Password</Text>
-                    <Text style={tw.style({ fontFamily: 'PTSans-Regular' }, 'text-black text-base')}>Create Your Password (Minimum 8 Characters).</Text>
-                </View>
+            <ScrollView>
+                <View style={tw`flex justify-start items-start gap-12 bg-white h-full p-4`}>
+                    <Ionicons name='chevron-back' size={24} color={"#000"} onPress={() => navigation.goBack()} />
+                    <View style={tw`flex justify-start items-start gap-4`}>
+                        <Text style={tw.style({ fontFamily: 'PTSans-Bold' }, 'text-3xl text-black')}>Create Account</Text>
+                        <Text style={tw.style({ fontFamily: 'PTSans-Regular' }, 'text-black text-base')}>Create an Account with us today! 😇 </Text>
+                    </View>
 
-                <View style={tw`flex justify-start items-center gap-8 p-2`}>
+                    <View style={tw`flex justify-start items-center gap-8 p-2`}>
+                        <CustomInput
+                            placeholder="Enter Username"
+                            value={username}
+                            type="username"
+                            placeholderTextColor={"#808080"}
+                            onChangeText={(username) => setUsername(username)}
+                            style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
+                        />
+                        <CustomInput
+                            placeholder="Enter Email Address"
+                            value={email}
+                            type="username"
+                            placeholderTextColor={"#808080"}
+                            onChangeText={(email) => setEmail(email)}
+                            style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
+                        />
+                        <CustomInput
+                            placeholder="Enter Phone number"
+                            value={phoneNumber}
+                            type="phoneNumber"
+                            placeholderTextColor={"#808080"}
+                            onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
+                            style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
+                        />
 
-                    <CustomInput
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
-                        placeholder="Enter Password"
-                        value={password}
-                        type="password"
-                        placeholderTextColor={"#808080"}
-                        onChangeText={(password) => setPassword(password)}
-                        style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
-                        secureTextEntry={!isVisible}
-                    />
-                    <Ionicons name={isVisible ? "eye-outline" : "eye-off-outline"} size={18} color={"#000000"} style={tw`absolute bottom-[138px] right-[25px]`} onPress={handleToggle} />
+                        <CustomInput
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            placeholder="Enter Password"
+                            value={password}
+                            type="password"
+                            placeholderTextColor={"#808080"}
+                            onChangeText={(password) => setPassword(password)}
+                            style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
+                            secureTextEntry={!isVisible}
+                        />
+                        <Ionicons name={isVisible ? "eye-outline" : "eye-off-outline"} size={18} color={"#000000"} style={tw`absolute bottom-[138px] right-[25px]`} onPress={handleToggle} />
 
-                    <CustomInput
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
-                        placeholder="Re-Enter Password"
-                        value={confirmPassword}
-                        type="password"
-                        placeholderTextColor={"#808080"}
-                        onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
-                        style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
-                        secureTextEntry={!isVisible}
-                    />
-                    <Ionicons name={isVisible ? "eye-outline" : "eye-off-outline"} size={18} color={"#000000"} style={tw`absolute bottom-[52px] right-[25px]`} onPress={handleToggle} />
+                        <CustomInput
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                            placeholder="Re-Enter Password"
+                            value={confirmPassword}
+                            type="password"
+                            placeholderTextColor={"#808080"}
+                            onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
+                            style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
+                            secureTextEntry={!isVisible}
+                        />
+                        <Ionicons name={isVisible ? "eye-outline" : "eye-off-outline"} size={18} color={"#000000"} style={tw`absolute bottom-[52px] right-[25px]`} onPress={handleToggle} />
+                    </View>
+                    <View style={tw`flex justify-center items-center p-2`}>
+                        {loading ?
+                            <View style={tw`bg-[#29bb00] rounded-full py-4 px-8 flex flex-row justify-center items-center w-[350px] m-auto`}>
+                                <ActivityIndicator size={"large"} color={"#fff"} />
+                            </View>
+                            :
+                            <CustomButton style={tw`flex flex-row justify-center items-center w-[350px] py-4 px-8 bg-gray-200 rounded-full ${inputColor ? 'bg-[#29bb00]' : 'bg-gray-200'}`} onPress={handleUserRegistration}>
+                                <Text style={tw.style({ fontFamily: 'PTSans-Regular' }, `${inputColor ? 'text-center text-white' : 'text-center text-black'}`)}>Create Account</Text>
+                            </CustomButton>
+                        }
+                    </View>
                 </View>
-                <View style={tw`flex justify-center items-center p-2`}>
-                    <CustomButton style={tw`flex flex-row justify-center items-center w-[350px] py-4 px-8 bg-gray-200 rounded-full ${inputColor ? 'bg-[#29bb00]' : 'bg-gray-200'}`} onPress={handleUserRegistration}>
-                        <Text style={tw.style({ fontFamily: 'PTSans-Regular' }, `${inputColor ? 'text-center text-white' : 'text-center text-black'}`)}>Create Account</Text>
-                    </CustomButton>
-                </View>
-            </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }

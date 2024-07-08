@@ -24,7 +24,7 @@ const Welcome = () => {
 
             <View style={tw`flex flex-col justify-center items-center gap-4`}>
                 <CustomButton style={tw`flex flex-row justify-center items-center bg-[#29BB00] w-[350px] h-12 rounded-full border-[#29BB00] border-2`}>
-                    <Text style={tw.style({ fontFamily: 'PTSans-Regular' }, 'text-white font-normal text-lg text-center')} onPress={() => navigation.navigate("Create Account")}>I'm new to the app</Text>
+                    <Text style={tw.style({ fontFamily: 'PTSans-Regular' }, 'text-white font-normal text-lg text-center')} onPress={() => navigation.navigate("Create Password")}>I'm new to the app</Text>
                 </CustomButton>
                 <CustomButton style={tw`flex flex-row justify-center items-center bg-white border-[#29BB00] border-2 w-[350px] h-12 rounded-full`}>
                     <Text style={tw.style({ fontFamily: 'PTSans-Regular' }, 'text-[#29BB00] font-normal text-lg text-center')} onPress={() => navigation.navigate("Login")}>Login</Text>

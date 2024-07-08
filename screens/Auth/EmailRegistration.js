@@ -9,13 +9,10 @@ import Constants from 'expo-constants';
 //import components
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { FIREBASE_AUTH } from '../../firebaseConfig';
 
 const EmailRegistration = () => {
 
     const navigation = useNavigation();
-    const auth = FIREBASE_AUTH;
 
     const [email, setEmail] = useState("");
     const [inputColor, setInputColor] = useState(false);
@@ -34,7 +31,7 @@ const EmailRegistration = () => {
         if (email) {
             navigation.navigate("Create Password", { email: email });
         } else {
-            alert("Please enter email address");
+            Alert.alert("Please enter email address");
         }
     }
 

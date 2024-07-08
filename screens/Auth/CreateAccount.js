@@ -6,47 +6,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import Constants from 'expo-constants';
 import SERVER from '../../util/server';
-import { setUser } from '../../redux/slice/userSlice';
-import { useDispatch } from 'react-redux';
 
 //import components
 import CustomButton from '../../components/CustomButton';
 
 const CreateAccount = () => {
-
-    const [userInfo, setUserInfo] = useState({
-        email: '',
-        phoneNumber: '',
-        password: ''
-    });
-
- 
-    const navigation = useNavigation(); //call useNavigation for navigating screens
-    const dispatch = useDispatch();
-
-    const handleChange = (name, value) => {
-        setUserInfo({...userInfo, [name]: value})
-    }
-
-    //***************No password field though!
-    const handleCreate = async (e) => {
-        e.preventDefault()
-        const { email, phoneNumber, password } = userInfo;
-        try {
-            const res = await SERVER.post('/api/v1/customer', {
-                email,
-                password,
-                phoneNumber
-            })
-            if(res.data){
-                dispatch(setUser(user)); //********Dispatch user details to Redux
-                navigation.navigate("Login"); 
-            }
-        } catch (error) {
-            //handle error
-        }
-    }
-
+    const navigation = useNavigation(); 
+    
     return (
         <>
             <SafeAreaView style={{ marginTop: Constants.statusBarHeight }}>

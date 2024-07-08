@@ -1,4 +1,4 @@
-import { Text, View, Image, SafeAreaView } from 'react-native';
+import { Text, View, Image, SafeAreaView, Alert } from 'react-native';
 import { useState } from 'react';
 import tw from "twrnc";
 import { useNavigation } from "@react-navigation/native";
@@ -29,7 +29,7 @@ const PhoneNumberRegistration = () => {
         if (number) {
             navigation.navigate("Create Password", { number: number });
         } else {
-            alert("Please enter phone number");
+            Alert.alert("Please enter phone number");
         }
     }
 

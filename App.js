@@ -10,10 +10,10 @@ import { Ionicons } from "@expo/vector-icons";
 
 //import components & Screens
 import Welcome from './screens/Welcome';
-import CreateAccount from './screens/Auth/CreateAccount';
-import EmailRegistration from './screens/Auth/EmailRegistration';
+// import CreateAccount from './screens/Auth/CreateAccount';
+// import EmailRegistration from './screens/Auth/EmailRegistration';
 import CreatePassword from "./screens/Auth/CreatePassword";
-import PhoneNumberRegistration from "./screens/Auth/PhoneNumberRegistration";
+// import PhoneNumberRegistration from "./screens/Auth/PhoneNumberRegistration";
 import Successful from "./screens/Auth/Successful";
 import Login from "./screens/Auth/Login";
 import ForgotPassword from "./screens/Forgot/ForgotPassword";
@@ -48,10 +48,6 @@ import RechargeCardPay from "./screens/Services/RechargeCardPrinting/RechargeCar
 import RehargeCardPrintingSuccess from "./screens/Services/RechargeCardPrinting/RechargeCardPrintingSuccess";
 import Transfer from "./screens/Profile/Transfer/Transfer";
 import TransferDetails from "./screens/Profile/Transfer/TransferDetails";
-import { store } from "./redux/store";
-import { persistor } from "./redux/store";
-import { PersistGate } from "redux-persist/integration/react";
-import { Provider } from "react-redux";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -79,8 +75,6 @@ export default function App() {
   return (
     <>
       <NavigationContainer>
-      <Provider store={store}>
-      <PersistGate  persistor={persistor} loading={null}>
         <Stack.Navigator>
           <Stack.Screen
             name="Welcome"
@@ -88,26 +82,10 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Create Account"
-            component={CreateAccount}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Email Registration"
-            component={EmailRegistration}
-            options={{ headerShown: false }}
-          />
-      
-          <Stack.Screen
             name="Create Password"
             component={CreatePassword}
             options={{ headerShown: false }}
-            />
-          <Stack.Screen
-            name="PhoneNumber Registration"
-            component={PhoneNumberRegistration}
-            options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Login"
             component={Login}
@@ -117,27 +95,27 @@ export default function App() {
             name="Successful"
             component={Successful}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Forgot Password"
             component={ForgotPassword}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Forgot Email"
             component={ForgotEmail}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Forgot Number"
             component={ForgotNumber}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="KYC"
             component={KYC}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="KYC Form"
             component={KYCForm}
@@ -152,27 +130,27 @@ export default function App() {
             name="Profile"
             component={Profile}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Data"
             component={Data}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Edit Number"
             component={EditPhoneNumber}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Edit Mail"
             component={EditMail}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Edit Address"
             component={EditAddress}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Create Pin"
             component={CreatePin}
@@ -197,12 +175,12 @@ export default function App() {
             name="Bulk Success"
             component={BulkSMSSuccessful}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Airtime Cash"
             component={AirtimeToCashPay}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Cash Success"
             component={AirtimeToCashSuccess}
@@ -227,50 +205,48 @@ export default function App() {
             name="Coupon Success"
             component={CouponSuccessful}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Data Pay"
             component={Data}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Successful Transfer"
             component={SuccessfulTransfer}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Education Pay"
             component={EducationPay}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Education Success"
             component={EducationPaySuccess}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Card Printing"
             component={RechargeCardPay}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Print Success"
             component={RehargeCardPrintingSuccess}
             options={{ headerShown: false }}
-            />
+          />
           <Stack.Screen
             name="Transfer"
             component={Transfer}
             options={{ headerShown: false }}
-            />
-          <Stack.Screen 
-          name="Transfer Details" 
-          component={TransferDetails} 
-          options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Transfer Details"
+            component={TransferDetails}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
-        </PersistGate>
-      </Provider>
       </NavigationContainer>
       <StatusBar style="dark" backgroundColor="#fff" />
     </>

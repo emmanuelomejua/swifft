@@ -5,21 +5,19 @@ import tw from 'twrnc'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import Constants from 'expo-constants';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-
+import axios from 'axios';
 //import components
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
-// import { FIREBASE_AUTH } from '../../firebaseConfig';
-import { useDispatch, useSelector } from 'react-redux'
-import { login, setUser } from '../../redux/slice/authSlice';
-// import User from '../../util/User';
+import { setToken } from '../../store/token';
+import { setUser, useAuth } from "../../zustand/useAuth";
+import SERVER from '../../util/server';
 
 const Login = () => {
 
     const navigation = useNavigation();
-    // const { status, error } = useSelector((state) => state.auth.status)
-    // const auth = FIREBASE_AUTH;
+    const setIsAuthenticated = useAuth((state) => state.setIsAuthenticated);
+    const setUser = useAuth((state) => state.setUser);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -27,15 +25,24 @@ const Login = () => {
     const [inputColor, setInputColor] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const dispatch = useDispatch();
-
     //function for handling login
     const handleLogin = async () => {
-        // e.preventDefault();
-        setIsLoading(true);
-        dispatch(setUser({email, password}))
-        dispatch(login({email, password}))
-        setIsLoading(false);
+        try {
+            setIsLoading(true);
+            const res = await axios.post(SERVER + "/api/v1/auth/login", {
+                email,
+                password
+            })
+            console.log(res)
+            setToken(res.tokens);
+            setUser(res)
+            setIsAuthenticated(true);
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error)
+            Alert.alert(error)
+        }
     }
 
 
