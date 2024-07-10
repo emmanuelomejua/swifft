@@ -49,6 +49,12 @@ import RechargeCardPay from "./screens/Services/RechargeCardPrinting/RechargeCar
 import RehargeCardPrintingSuccess from "./screens/Services/RechargeCardPrinting/RechargeCardPrintingSuccess";
 import Transfer from "./screens/Profile/Transfer/Transfer";
 import TransferDetails from "./screens/Profile/Transfer/TransferDetails";
+import { store } from "./services/store";
+import { persistor } from "./services/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
+
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -73,12 +79,12 @@ export default function App() {
     return null;
   }
 
-  const queryClient = new QueryClient()
 
   return (
     <>
       <NavigationContainer>
-        <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+      <PersistGate  persistor={persistor} loading={null}>
 
         <Stack.Navigator>
           <Stack.Screen
@@ -240,19 +246,20 @@ export default function App() {
             name="Print Success"
             component={RehargeCardPrintingSuccess}
             options={{ headerShown: false }}
-          />
+            />
           <Stack.Screen
             name="Transfer"
             component={Transfer}
             options={{ headerShown: false }}
-          />
+            />
           <Stack.Screen
             name="Transfer Details"
             component={TransferDetails}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
-        </QueryClientProvider>
+      </PersistGate>
+      </Provider>
       </NavigationContainer>
       <StatusBar style="dark" backgroundColor="#fff" />
     </>
@@ -261,11 +268,11 @@ export default function App() {
 
 export const Profile = () => {
 
-  const queryClient = new QueryClient();
-  
+
   return (
     <>
-    <QueryClientProvider client={queryClient}>
+       <Provider store={store}>
+       <PersistGate  persistor={persistor} loading={null}>
       <Tab.Navigator screenOptions={{ tabBarStyle: { height: 60 }, tabBarActiveTintColor: '#29BB00', tabBarInactiveTintColor: '#656756' }}>
         <Tab.Screen
           name="Home"
@@ -308,7 +315,8 @@ export const Profile = () => {
           }}
         />
       </Tab.Navigator>
-    </QueryClientProvider>
+      </PersistGate>
+      </Provider>
     </>
   )
 }

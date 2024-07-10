@@ -13,6 +13,7 @@ import CustomInput from '../../../components/CustomInput';
 import CustomButton from '../../../components/CustomButton';
 import CustomOTP from '../../../components/CustomOTP';
 import SERVER from '../../../util/server';
+import { useQuery } from '@tanstack/react-query';
 
 const Airtime = () => {
 
@@ -73,7 +74,15 @@ const Airtime = () => {
           }
      }, [fill, navigation])
 
-     // const {  }
+     const { isPending, error, data: airtimeData } = useQuery({
+          queryKey: ['airtime'],
+          queryFn: async () => {
+               const res = await SERVER.get( `/api/v1/services/airtime/${value._id}`);
+               return res.data
+           }
+     })
+
+     console.log(airtimeData)
 
 
      const handleSubmit = async () => {
