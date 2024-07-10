@@ -11,6 +11,8 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SERVER from '../../util/server';
 import { setToken } from '../../store/token';
+import { useDispatch } from 'react-redux';
+import { register, setUser } from '../../redux/slice/userSlice';
 
 const CreatePassword = () => {
     const navigation = useNavigation();
@@ -22,6 +24,8 @@ const CreatePassword = () => {
         password: '',
         confirmPassword: ''
     })
+
+    const dispatch = useDispatch();
 
     // const [email, setEmail] = useState("");
     // const [phoneNumber, setPhoneNumber] = useState("");
@@ -53,27 +57,36 @@ const CreatePassword = () => {
     }
 
     const handleUserRegistration = async () => {
+        const { password, email, username, phoneNumber } = user;
         if (password !== confirmPassword) {
             Alert.alert("passwords don't match");
+            return;
         }
+
         try {
-            const res = await SERVER.post('api/v1/customer', {
-                username,
-                email,
-                phoneNumber,
-                password
-            });
-            setLoading(true);
-            console.log(res);
-            setToken(res.tokens);
-            Alert.alert("Welcome to Swift Connect");
-            navigation.navigate("Profile");
-            setLoading(false)
+            dispatch(setUser({password, email, username, phoneNumber}));
+            dispatch(register({password, email, username, phoneNumber}))
         } catch (error) {
-            console.log(error);
             Alert.alert(error);
-            setLoading(false)
         }
+        // try {
+        //     const res = await SERVER.post('api/v1/customer', {
+        //         username,
+        //         email,
+        //         phoneNumber,
+        //         password
+        //     });
+        //     setLoading(true);
+        //     console.log(res);
+        //     setToken(res.tokens);
+        //     Alert.alert("Welcome to Swift Connect");
+        //     navigation.navigate("Profile");
+        //     setLoading(false)
+        // } catch (error) {
+        //     console.log(error);
+        //     Alert.alert(error);
+        //     setLoading(false)
+        // }
     }
 
     return (

@@ -9,21 +9,23 @@ import axios from 'axios';
 //import components
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
-import { setToken } from '../../store/token';
-import { setUser, useAuth } from "../../zustand/useAuth";
-import SERVER from '../../util/server';
-import { useDispatch } from 'react-redux';
+// import {  useAuth } from "../../zustand/useAuth";
+
+import { useDispatch, useSelector } from 'react-redux'
+import { login, setUser } from '../../redux/slice/authSlice';
 
 const Login = () => {
 
     const navigation = useNavigation();
-    const setUser = useAuth((state) => state.setUser);
+    // const setUser = useAuth((state) => state.setUser);
+
+    const { status, error } = useSelector((state) => state.auth)
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isVisible, setIsVisble] = useState(false);
     const [inputColor, setInputColor] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    // const [isLoading, setIsLoading] = useState(false);
 
     //function for handling login
     // const handleLogin = async () => {
@@ -50,8 +52,12 @@ const Login = () => {
     //function for handling login
     const handleLogin = async (e) => {
         e.preventDefault();
-        dispatch(setUser({email, password}))
-        dispatch(login({email, password}))
+        try {
+            dispatch(setUser({email, password}))
+            dispatch(login({email, password}))
+        } catch (error) {
+            Alert.alert(error)
+        }
     }
 
 
@@ -109,7 +115,7 @@ const Login = () => {
                 </View>
 
                 <View style={tw`flex justify-center items-center gap-4 px-4`}>
-                    {isLoading ?
+                    {status === 'pending' ?
                         <CustomButton style={tw`flex flex-row justify-center items-center min-w-full py-4 px-8 rounded-full bg-[#29bb00]`}>
                             <ActivityIndicator size="large" color={"#fff"} />
                         </CustomButton> :
