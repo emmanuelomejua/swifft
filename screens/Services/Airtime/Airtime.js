@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, Image, ScrollView, Alert } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import tw from 'twrnc';
 import { Ionicons, Feather } from '@expo/vector-icons';
@@ -6,13 +6,13 @@ import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { useDispatch } from 'react-redux';
 // import ConfirmationCodeField from 'react-native-confirmation-code-field';
 
 //import components
 import CustomInput from '../../../components/CustomInput';
 import CustomButton from '../../../components/CustomButton';
 import CustomOTP from '../../../components/CustomOTP';
+import SERVER from '../../../util/server';
 
 const Airtime = () => {
 
@@ -73,11 +73,18 @@ const Airtime = () => {
           }
      }, [fill, navigation])
 
-     const dispatch = useDispatch();
+     // const {  }
 
-     //dispatch actions here
-     const handleSubmit = () => {
 
+     const handleSubmit = async () => {
+          try {
+               const res = await SERVER.post('/api/v1/services/airtime', {
+                    //set what you are posting here!
+               })
+          } catch (error) {
+               Alert.alert(error);
+               console.error(error);
+          }
      }
 
      return (

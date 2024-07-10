@@ -7,6 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as SplashScreen from "expo-splash-screen";
 import { Ionicons } from "@expo/vector-icons";
+import { QueryClient, QueryClientProvider,} from '@tanstack/react-query'
 
 //import components & Screens
 import Welcome from './screens/Welcome';
@@ -72,9 +73,13 @@ export default function App() {
     return null;
   }
 
+  const queryClient = new QueryClient()
+
   return (
     <>
       <NavigationContainer>
+        <QueryClientProvider client={queryClient}>
+
         <Stack.Navigator>
           <Stack.Screen
             name="Welcome"
@@ -140,7 +145,7 @@ export default function App() {
             name="Edit Number"
             component={EditPhoneNumber}
             options={{ headerShown: false }}
-          />
+            />
           <Stack.Screen
             name="Edit Mail"
             component={EditMail}
@@ -170,7 +175,7 @@ export default function App() {
             name="Bulk sms"
             component={BulkSMS}
             options={{ headerShown: false }}
-          />
+            />
           <Stack.Screen
             name="Bulk Success"
             component={BulkSMSSuccessful}
@@ -190,7 +195,7 @@ export default function App() {
             name="Cable"
             component={CablePay}
             options={{ headerShown: false }}
-          />
+            />
           <Stack.Screen
             name="Cable Success"
             component={CablePaySuccess}
@@ -230,7 +235,7 @@ export default function App() {
             name="Card Printing"
             component={RechargeCardPay}
             options={{ headerShown: false }}
-          />
+            />
           <Stack.Screen
             name="Print Success"
             component={RehargeCardPrintingSuccess}
@@ -247,6 +252,7 @@ export default function App() {
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
+        </QueryClientProvider>
       </NavigationContainer>
       <StatusBar style="dark" backgroundColor="#fff" />
     </>
@@ -254,8 +260,12 @@ export default function App() {
 }
 
 export const Profile = () => {
+
+  const queryClient = new QueryClient();
+  
   return (
     <>
+    <QueryClientProvider client={queryClient}>
       <Tab.Navigator screenOptions={{ tabBarStyle: { height: 60 }, tabBarActiveTintColor: '#29BB00', tabBarInactiveTintColor: '#656756' }}>
         <Tab.Screen
           name="Home"
@@ -286,7 +296,7 @@ export const Profile = () => {
               <Ionicons name="help-circle-outline" size={24} color={focused ? "#29BB00" : '#656765'} />
             ),
           }}
-        />
+          />
         <Tab.Screen
           name="Me"
           component={Account}
@@ -298,6 +308,7 @@ export const Profile = () => {
           }}
         />
       </Tab.Navigator>
+    </QueryClientProvider>
     </>
   )
 }
