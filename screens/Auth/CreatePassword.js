@@ -65,10 +65,12 @@ const CreatePassword = () => {
 
         try {
             dispatch(setUser({password, email, username, phoneNumber}));
-            dispatch(register({password, email, username, phoneNumber}))
+            dispatch(register({password, email, username, phoneNumber}));
+            navigation.navigate('Profile')
         } catch (error) {
             Alert.alert(error);
         }
+        
         // try {
         //     const res = await SERVER.post('api/v1/customer', {
         //         username,
