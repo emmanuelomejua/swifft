@@ -14,13 +14,20 @@ import { setToken } from '../../store/token';
 
 const CreatePassword = () => {
     const navigation = useNavigation();
-    const route = useRoute();
 
-    const [email, setEmail] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [user, setUser] = useState({
+        email: '',
+        username: '',
+        phoneNumber: '',
+        password: '',
+        confirmPassword: ''
+    })
+
+    // const [email, setEmail] = useState("");
+    // const [phoneNumber, setPhoneNumber] = useState("");
+    // const [username, setUsername] = useState("");
+    // const [password, setPassword] = useState("");
+    // const [confirmPassword, setConfirmPassword] = useState("");
     const [inputColor, setInputColor] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -38,12 +45,19 @@ const CreatePassword = () => {
         setIsVisbile(!isVisible);
     }
 
+    const handleChangeText = (field, value) => {
+        setUser(prevUser => ({
+            ...prevUser,
+            [field]: value
+        }));
+    }
+
     const handleUserRegistration = async () => {
         if (password !== confirmPassword) {
             Alert.alert("passwords don't match");
         }
         try {
-            const res = await axios.post("https://swift-tznw.onrender.com/api/v1/customer/", {
+            const res = await SERVER.post('api/v1/customer', {
                 username,
                 email,
                 phoneNumber,
@@ -75,26 +89,26 @@ const CreatePassword = () => {
                     <View style={tw`flex justify-start items-center gap-8 p-2`}>
                         <CustomInput
                             placeholder="Enter Username"
-                            value={username}
+                            value={user.username}
                             type="username"
                             placeholderTextColor={"#808080"}
-                            onChangeText={(username) => setUsername(username)}
+                            onChangeText={(value) => handleChangeText('username', value)}
                             style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
                         />
                         <CustomInput
                             placeholder="Enter Email Address"
-                            value={email}
+                            value={user.email}
                             type="username"
                             placeholderTextColor={"#808080"}
-                            onChangeText={(email) => setEmail(email)}
+                            onChangeText={(value) => handleChangeText('email', value)}
                             style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
                         />
                         <CustomInput
                             placeholder="Enter Phone number"
-                            value={phoneNumber}
+                            value={user.phoneNumber}
                             type="phoneNumber"
                             placeholderTextColor={"#808080"}
-                            onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
+                            onChangeText={(value) => handleChangeText('phoneNumber', value)}
                             style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
                         />
 
@@ -102,10 +116,10 @@ const CreatePassword = () => {
                             onFocus={handleFocus}
                             onBlur={handleBlur}
                             placeholder="Enter Password"
-                            value={password}
+                            value={user.password}
                             type="password"
                             placeholderTextColor={"#808080"}
-                            onChangeText={(password) => setPassword(password)}
+                            onChangeText={(value) => handleChangeText('password', value)}
                             style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
                             secureTextEntry={!isVisible}
                         />
@@ -115,10 +129,10 @@ const CreatePassword = () => {
                             onFocus={handleFocus}
                             onBlur={handleBlur}
                             placeholder="Re-Enter Password"
-                            value={confirmPassword}
+                            value={user.confirmPassword}
                             type="password"
                             placeholderTextColor={"#808080"}
-                            onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
+                            onChangeText={(value) => handleChangeText('confirmPassword', value)}
                             style={tw`border-2 border-gray-400 px-6 w-[350px] h-14 rounded-lg  ${inputColor ? 'border-[#29BB00]' : ''}`}
                             secureTextEntry={!isVisible}
                         />

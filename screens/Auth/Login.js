@@ -12,11 +12,11 @@ import CustomButton from '../../components/CustomButton'
 import { setToken } from '../../store/token';
 import { setUser, useAuth } from "../../zustand/useAuth";
 import SERVER from '../../util/server';
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
 
     const navigation = useNavigation();
-    const setIsAuthenticated = useAuth((state) => state.setIsAuthenticated);
     const setUser = useAuth((state) => state.setUser);
 
     const [email, setEmail] = useState("");
@@ -26,25 +26,33 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     //function for handling login
-    const handleLogin = async () => {
-        try {
-            setIsLoading(true);
-            const res = await SERVER.post("/api/v1/auth/login", {
-                email,
-                password
-            })
-            console.log(res)
-            setToken(res.tokens);
-            setUser(res)
-            setIsAuthenticated(true);
-            setIsLoading(false);
-        } catch (error) {
-            setIsLoading(false);
-            console.log(error)
-            Alert.alert(error)
-        }
-    }
+    // const handleLogin = async () => {
+    //     try {
+    //         setIsLoading(true);
+    //         const res = await SERVER.post("/api/v1/auth/login", {
+    //             email,
+    //             password
+    //         })
+    //         console.log(res)
+    //         setToken(res.tokens);
+    //         setUser(res)
+    //         setIsAuthenticated(true);
+    //         setIsLoading(false);
+    //     } catch (error) {
+    //         setIsLoading(false);
+    //         console.log(error)
+    //         Alert.alert(error)
+    //     }
+    // }
 
+    const dispatch = useDispatch();
+
+    //function for handling login
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        dispatch(setUser({email, password}))
+        dispatch(login({email, password}))
+    }
 
 
     //function for handling inputcolor and button color change 
