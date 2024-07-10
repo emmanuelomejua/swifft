@@ -1,5 +1,5 @@
 //import libraries
-import { View, Text, SafeAreaView } from 'react-native';
+import { View, Text, SafeAreaView, Alert } from 'react-native';
 import React, { useState } from 'react';
 import tw from "twrnc";
 import { useNavigation } from "@react-navigation/native";
@@ -12,6 +12,35 @@ import CustomButton from '../../components/CustomButton';
 
 const CreateAccount = () => {
     const navigation = useNavigation(); 
+
+    const [userInfo, setUserInfo] = useState({
+        email: '',
+        phoneNumber: '',
+        password: ''
+    });
+
+    const handleChange = (name, value) => {
+        setUserInfo({...userInfo, [name]: value})
+    }
+
+    //***************No password field though!
+    const handleCreate = async (e) => {
+        e.preventDefault()
+        const { email, phoneNumber, password } = userInfo;
+        try {
+            const res = await SERVER.post('/api/v1/customer', {
+                email,
+                password,
+                phoneNumber
+            })
+            if(res.data){
+            navigation.navigate("Login"); 
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert(error)
+        }
+    }
     
     return (
         <>
