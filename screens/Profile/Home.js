@@ -17,7 +17,7 @@ const Home = ({route}) => {
     // const { user } = route.params;
     const navigation = useNavigation();
 
-   const user = useAuth((state) => state.user);
+   const {user} = useSelector((state) => state.user)
 
     const [isFocused, setIsFocused] = useState(false);
 
